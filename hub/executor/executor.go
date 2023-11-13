@@ -330,6 +330,9 @@ func loadProxyProvider(proxyProviders map[string]provider.ProxyProvider) {
 		go func() {
 			defer func() { <-ch; wg.Done() }()
 			loadProvider(proxyProvider)
+			if proxyProvider.VehicleType() == provider.Compatible {
+				go proxyProvider.HealthCheck()
+			}
 		}()
 	}
 
